@@ -13,7 +13,7 @@ export interface IProduct {
     price: number;
 }
 
-export interface IProductButton {
+export interface IViewProductItem {
     element: HTMLElement;
     id: string;
     category: HTMLElement;
@@ -87,7 +87,7 @@ export interface IMarketController {
     updateOrderUserData(data: Map<string, string>): void;
     updateProductModel(id: string): void;
     uploadBasket(items: string[], products: IProduct[]): IBasketItem[];
-    formatProducts(data: IProduct[]): IProductButton[];
+    formatProducts(data: IProduct[]): IViewProductItem[];
 }
 
 export interface IModal {
