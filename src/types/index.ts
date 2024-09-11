@@ -103,15 +103,12 @@ export interface IProductModal extends IModal {
     price: HTMLElement;
     category: HTMLElement;
     description: HTMLElement;
-
-    addBasketHandle(data: Function): void;
 }
 
 export interface IBasketModal extends IModal {
     items: IBasketItem[];
 
     pasteItem(data: IBasketItem): void;
-    orderHandler(data: Function): void;
 }
 
 export interface IPaymentModal extends IModal {
