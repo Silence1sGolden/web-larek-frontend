@@ -146,5 +146,6 @@ setRemoveHandler(data: Function): void; // Устанавливает обраб
 render(): HTMLElement; // Возвращает готовый HTMLElement.
 
 ```
+## UML схема
 ![lar](https://github.com/user-attachments/assets/a259d0cd-6f77-478a-b577-e663e0ae327c)
 
