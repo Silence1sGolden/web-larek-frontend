@@ -1,10 +1,10 @@
 import { Api } from "../components/base/api";
 
-type PaymentMethod = 'online' | 'offline';
-type UserData = 'address' | 'phone' | 'email';
-type BasketUpdateMethod = 'add' | 'remove';
+export type PaymentMethod = 'online' | 'offline';
+export type UserData = 'address' | 'phone' | 'email';
+export type BasketUpdateMethod = 'add' | 'remove';
 
-interface IProduct {
+export interface IProduct {
     id: string;
     description: string;
     image: string;
@@ -13,7 +13,7 @@ interface IProduct {
     price: number;
 }
 
-interface IProductButton {
+export interface IProductButton {
     element: HTMLElement;
     id: string;
     category: HTMLElement;
@@ -25,7 +25,7 @@ interface IProductButton {
     render(): HTMLElement;
 }
 
-interface IBasketItem {
+export interface IBasketItem {
     element: HTMLElement;
     id: string;
     title: HTMLElement;
@@ -35,30 +35,30 @@ interface IBasketItem {
     render(): HTMLElement;
 }
 
-interface IApiProducts {
+export interface IApiProducts {
     total: number;
     items: IProduct[];
 }
 
-interface IOrderUserData {
+export interface IOrderUserData {
     payment: PaymentMethod;
     email: string;
     phone: string;
     address: string;
 }
 
-interface IOrderData extends IOrderUserData {
+export interface IOrderData extends IOrderUserData {
     total: number;
     items: String[];
 }
 
-interface IApiMarket {
+export interface IApiMarket {
     api: Api;
     loadProducts(): Promise<IApiProducts>;
     order(data: IOrderData): Promise<IOrderData>;
 }
 
-interface IMarket {
+export interface IMarket {
     products: IProduct[];
     total: number;
     orderUserData: IOrderUserData;
@@ -71,30 +71,32 @@ interface IMarket {
     addToBasket(id: string): void;
 }
 
-interface IPage {
+export interface IPage {
+    container: HTMLElement;
+
     pasteProductElement(elem: HTMLElement): void;
     setNumberItemsInBusket(data: number): void;
     closeModal(data: HTMLElement): void;
     openModal(data: HTMLElement): void;
 }
 
-interface IMarketConroller {
+export interface IMarketController {
     api: Api;
 
     updateBasket(id: string, method: BasketUpdateMethod): void;
-    updateOrderUserData(data: String[]): void;
+    updateOrderUserData(data: Map<string, string>): void;
     updateProductModel(id: string): void;
     uploadBasket(items: string[], products: IProduct[]): IBasketItem[];
     formatProducts(data: IProduct[]): IProductButton[];
 }
 
-interface IModal {
+export interface IModal {
     modal: HTMLElement;
 
     setButtonHandler(data: Function): void;
 }
 
-interface IProductModal extends IModal {
+export interface IProductModal extends IModal {
     id: string;
     image: HTMLElement;
     title: HTMLElement;
@@ -105,25 +107,25 @@ interface IProductModal extends IModal {
     addBasketHandle(data: Function): void;
 }
 
-interface IBasketModal extends IModal {
+export interface IBasketModal extends IModal {
     items: IBasketItem[];
 
     pasteItem(data: IBasketItem): void;
     orderHandler(data: Function): void;
 }
 
-interface IPaymentModal extends IModal {
+export interface IPaymentModal extends IModal {
     getPaymentMethod(): PaymentMethod;
     getInputData(): string;
     clear(): void;
 }
 
-interface IContactModal extends IModal {
+export interface IContactModal extends IModal {
     getInputs(): string[];
     clear(): void;
 }
 
-interface ICompleteModal extends IModal {
+export interface ICompleteModal extends IModal {
     title: HTMLElement;
     description: HTMLElement;
 }
