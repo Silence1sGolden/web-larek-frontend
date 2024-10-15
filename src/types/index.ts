@@ -1,3 +1,4 @@
+import { Api } from "../components/base/api";
 import { EventEmitter } from "../components/base/events";
 
 export type PaymentMethod = 'online' | 'offline';
@@ -60,7 +61,7 @@ export interface IOrderData extends IOrderUserData { // данные предн�
 }
 
 export interface IApiMarket {
-    api: string; // api по которому будут происходить запросы
+    api: Api; // api по которому будут происходить запросы
 
     loadProducts(): Promise<IApiProducts>; // отправляет запрос на сервер и возвращает IApiProducts
     order(data: IOrderData): Promise<IOrderData>; // отправляет запрос на оформление заказа
@@ -86,7 +87,6 @@ export interface IPresenter { // презентер
     emitter: EventEmitter;
     
     init(): void; // метод инициализации, загрузки данных с сервера и т.д.
-    // обработчики событий
     handlerOpenCard(id:string): void; // обработчик открытия модального окна карточки
     handlerCompleteOrder(data: IOrderData): void; // обработчик отправки данных заказа на сервер 
     handlerWriteOrderData(data: object): void; // обработчик события при заполнении данных пользователем
@@ -97,10 +97,14 @@ export interface IPresenter { // презентер
 export interface IPage { // отображение
     cardContainer: HTMLElement; // контейнер в котором будут отображаться карточки товаров
     basketCounter: HTMLElement; // элемент, который отображает кол-во товаров в корзине
-    modal: HTMLElement; // модальное окно
+
+    setChildrenCardContainer(data: IProduct): void; // заполняет cardContainer продуктами
+    setNumberBasketCounter(data: number): void; // устанавливает кол-во товаров в корзине
 }
 
 export interface IModal { // модальное окно
+    modal: HTMLElement; // модальное окно
+
     openModal(data: HTMLElement): void; // отображение модального окна
     closeModal(data: HTMLElement): void; // закрывает модального окна
 }
