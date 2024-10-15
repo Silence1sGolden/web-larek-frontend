@@ -60,11 +60,16 @@ export interface IOrderData extends IOrderUserData { // данные предн�
 }
 
 export interface IApiMarket {
+    api: string; // api по которому будут происходить запросы
+
     loadProducts(): Promise<IApiProducts>; // отправляет запрос на сервер и возвращает IApiProducts
     order(data: IOrderData): Promise<IOrderData>; // отправляет запрос на оформление заказа
 }
 
 export interface IMarket { // модель данных
+    products: IProduct[]; // данные о товарах
+    userData: IOrderUserData; // данные пользователя, которые он вводит
+
     getBasketItems(): IProduct[]; // возвращает товары с  пометкой inBasket: true
     getProducts(): IProduct[]; // возвращает массив с товарами
     getProduct(id: string): IProduct | undefined; // возвращает найденный товар или undefined
@@ -87,8 +92,6 @@ export interface IPresenter { // презентер
     handlerWriteOrderData(data: object): void; // обработчик события при заполнении данных пользователем
     handlerAddToBasket(id: string): void; // обработчик добавления товара в корзину
     handlerRemoveFromBasket(id: string): void; // обработчик удаления товара из корзины
-    // работа с модальными окнами
-    openModal(data: HTMLElement): void; // отображение модального окна
 }
 
 export interface IPage { // отображение
@@ -98,7 +101,6 @@ export interface IPage { // отображение
 }
 
 export interface IModal { // модальное окно
-    getInputs(): object; // собирает данные всех input и возвращает в виде обьекта
-    setInput(name: string, data: string): void; // устанавливает содержимое поля input
-    setCardData(data: IProduct): void; // устанавливает данные карточки 
+    openModal(data: HTMLElement): void; // отображение модального окна
+    closeModal(data: HTMLElement): void; // закрывает модального окна
 }
