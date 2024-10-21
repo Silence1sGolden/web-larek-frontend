@@ -21,6 +21,12 @@ export interface ICard { // данные необходимые для отоб�
     price: number | null;
 }
 
+export interface IBasketItem { // данные необходимые для отображения продукта в корзине
+    id: string;
+    title: string;
+    price: number | null;
+}
+
 export interface IViewCard extends ICard { // отображение карточки на главной странице
     setCategory(data: string): void;
     setImage(data: string): void;
@@ -28,12 +34,6 @@ export interface IViewCard extends ICard { // отображение карто�
     setPrice(data: number): void;
     setOpenHandler(data: Function): void;
     render(data: ICard): HTMLElement;
-}
-
-export interface IBasketItem { // данные необходимые для отображения продукта в корзине
-    id: string;
-    title: string;
-    price: number | null;
 }
 
 export interface IViewBasketItem extends IBasketItem { // отображение карточки
