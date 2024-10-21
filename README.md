@@ -112,6 +112,11 @@ setNumberBasketCounter(data: number): void; // устанавливает кол
 ```ts
 
 element: HTMLElement; // элемент карточки
+img: HTMLImageElement // элемент картинки
+category: HTMLSpanElement; // элемент категории
+title: HTMLHeadingElement; // элемент названия
+text: HTMLParagraphElement; // элемент текста
+price: HTMLSpanElement; // элемент стоимости
 
 setCategory(data: string): void; // устанавливает навание категории
 setImage(data: string): void; // устанавливает ссылку картинки
@@ -128,6 +133,8 @@ render(): HTMLElement; // возвращает готовый элемент р�
 ```ts
 
 element: HTMLElement; // элемент товара корзины
+title: HTMLSpanElement; // элемент названия
+price: HTMLSpanElement; // элемент цены
 
 setTitle(data: string): void; // устанавливает название товара
 setPrice(data: number): void; // устанавливает стоимость товара

@@ -27,18 +27,25 @@ export interface IBasketItem { // данные необходимые для о�
     price: number | null;
 }
 
-export interface IViewCard extends ICard { // отображение карточки на главной странице
-    element: HTMLElement;
+export interface IViewCard { // отображение карточки на главной странице
+    element: HTMLElement; // элемент карточки
+    img: HTMLImageElement; // элемент картинки
+    category: HTMLSpanElement; // элемент категории
+    title: HTMLHeadingElement; // элемент названия
+    text: HTMLParagraphElement; // элемент текста
+    price: HTMLSpanElement; // элемент стоимости
 
     setCategory(data: string): void;
     setImage(data: string): void;
     setTitle(data: string): void;
     setPrice(data: number): void;
-    render(data: ICard): HTMLElement;
+    render(): HTMLElement;
 }
 
-export interface IViewBasketItem extends IBasketItem { // отображение карточки
+export interface IViewBasketItem { // отображение карточки
     element: HTMLElement;
+    title: HTMLSpanElement; // элемент названия
+    price: HTMLSpanElement; // элемент цены
 
     setTitle(data: string): void;
     setPrice(data: number): void;
