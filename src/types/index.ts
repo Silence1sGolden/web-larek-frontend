@@ -28,15 +28,18 @@ export interface IBasketItem { // данные необходимые для о�
 }
 
 export interface IViewCard extends ICard { // отображение карточки на главной странице
+    element: HTMLElement;
+
     setCategory(data: string): void;
     setImage(data: string): void;
     setTitle(data: string): void;
     setPrice(data: number): void;
-    setOpenHandler(data: Function): void;
     render(data: ICard): HTMLElement;
 }
 
 export interface IViewBasketItem extends IBasketItem { // отображение карточки
+    element: HTMLElement;
+
     setTitle(data: string): void;
     setPrice(data: number): void;
     setRemoveHandler(data: Function): void;
