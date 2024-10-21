@@ -67,7 +67,7 @@ removeFromBasket(id: string): void; // устанавливает метку inB
 
 ```ts
 
-api: Api; // api по которому будут происходить запросы
+api: Api; // компонент Api, который обрабатывает запросы
 
 loadProducts(): Promise<IApiProducts>; // загружает данные о товарах
 order(data: IOrderData): Promise<IOrderData>; // отправляет заказ на сервер для его подстверждения
