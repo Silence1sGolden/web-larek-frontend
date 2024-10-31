@@ -3,6 +3,11 @@ import { EventEmitter } from "../components/base/events";
 
 export type PaymentMethod = 'online' | 'offline';
 
+export interface IOrderCorrectResponse {
+    id: string,
+    total: number
+}
+
 export interface IProduct {
     id: string;
     description: string;
@@ -27,30 +32,28 @@ export interface IBasketItem { // данные необходимые для о�
     price: number | null;
 }
 
-export interface IViewCard { // отображение карточки на главной странице
-    element: HTMLElement; // элемент карточки
+export interface IView {
+    element: HTMLElement;
+    render(data?: unknown): HTMLElement;
+}
+
+export interface IViewCard extends IView { // отображение карточки на главной странице
     img: HTMLImageElement; // элемент картинки
     category: HTMLSpanElement; // элемент категории
     title: HTMLHeadingElement; // элемент названия
-    text: HTMLParagraphElement; // элемент текста
     price: HTMLSpanElement; // элемент стоимости
 
-    setCategory(data: string): void;
-    setImage(data: string): void;
-    setTitle(data: string): void;
-    setPrice(data: number): void;
-    render(): HTMLElement;
+    
 }
 
-export interface IViewBasketItem { // отображение карточки
-    element: HTMLElement;
+export interface IViewBasketItem extends IView { // отображение карточки
     title: HTMLSpanElement; // элемент названия
     price: HTMLSpanElement; // элемент цены
+    deleteButton: HTMLElement;
 
-    setTitle(data: string): void;
-    setPrice(data: number): void;
-    setRemoveHandler(data: Function): void;
-    render(card: IBasketItem): HTMLElement;
+    setTitle(data: string): IViewBasketItem;
+    setPrice(data: string): IViewBasketItem;
+    setRemoveHandler(data: Function): IViewBasketItem;
 }
 
 export interface IApiProducts { // интерфейс ответа сервера при запросе товаров
@@ -74,17 +77,21 @@ export interface IApiMarket {
     api: Api; // api по которому будут происходить запросы
 
     loadProducts(): Promise<IApiProducts>; // отправляет запрос на сервер и возвращает IApiProducts
-    order(data: IOrderData): Promise<IOrderData>; // отправляет запрос на оформление заказа
+    order(data: IOrderData): Promise<IOrderCorrectResponse>; // отправляет запрос на оформление заказа
 }
 
 export interface IMarket { // модель данных
     products: IProduct[]; // данные о товарах
     userData: IOrderUserData; // данные пользователя, которые он вводит
 
-    getBasketItems(): IProduct[]; // возвращает товары с  пометкой inBasket: true
+    setProducts(data: IProduct[]): void;
+    getBasketItems(full: boolean): IProduct[] | undefined; // возвращает товары с  пометкой inBasket: true
     getProducts(): IProduct[]; // возвращает массив с товарами
     getProduct(id: string): IProduct | undefined; // возвращает найденный товар или undefined
-    setUserData(name: string, data: string): void; // устанавливает заданному ключу определённые данные
+    setAddress(data: string): void;
+    setEmail(data: string): void;
+    setPhone(data: string): void;
+    setPaymentMethod(data: PaymentMethod): void;
     clearUserData(): void; // очищает все данные пользователя
     addToBasket(id: string): void; // устанавливает метку inBasket: true на товар
     removeFromBasket(id: string): void; // устанавливает метку inBasket: false на товар
@@ -98,7 +105,7 @@ export interface IPresenter { // презентер
     
     init(): void; // метод инициализации, загрузки данных с сервера и т.д.
     handlerOpenCard(id:string): void; // обработчик открытия модального окна карточки
-    handlerCompleteOrder(data: IOrderData): void; // обработчик отправки данных заказа на сервер 
+    handlerCompleteOrder(data: IOrderData): Promise<IOrderCorrectResponse>; // обработчик отправки данных заказа на сервер 
     handlerWriteOrderData(data: object): void; // обработчик события при заполнении данных пользователем
     handlerAddToBasket(id: string): void; // обработчик добавления товара в корзину
     handlerRemoveFromBasket(id: string): void; // обработчик удаления товара из корзины
@@ -108,13 +115,29 @@ export interface IPage { // отображение
     cardContainer: HTMLElement; // контейнер в котором будут отображаться карточки товаров
     basketCounter: HTMLElement; // элемент, который отображает кол-во товаров в корзине
 
-    setChildrenCardContainer(data: IProduct): void; // заполняет cardContainer продуктами
-    setNumberBasketCounter(data: number): void; // устанавливает кол-во товаров в корзине
+    replaceGallery(data: HTMLElement[]): void; // заполняет cardContainer продуктами
+    setBasketCounter(data: string): void; // устанавливает кол-во товаров в корзине
 }
 
-export interface IModal { // модальное окно
-    modal: HTMLElement; // модальное окно
+export interface IModal extends IView { // модальное окно
+    openModal(): void; // отображает модальное окно
+    closeModal(): void; // закрывает модальное окно
+}
 
-    openModal(data: HTMLElement): void; // отображение модального окна
-    closeModal(data: HTMLElement): void; // закрывает модального окна
+export interface IModalComplete extends IView { // модальное окно оформленного заказа
+    setFullPrice(data: number): void; // установить общую стоимость заказа
+}
+
+export interface IModalBasket extends IView { // модальное окно корзины
+    replaceChildren(data: HTMLElement[]): void; // установить товары корзины
+}
+
+export interface IModalProduct extends IView { // модвльное окно продукта
+    setProduct(data: ICard): void; // установить данные о продукте
+}
+
+export interface IModalPayment extends IView {
+}
+
+export interface IModalContacts extends IView {
 }
