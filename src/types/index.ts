@@ -71,9 +71,9 @@ export interface IViewBasketItem extends IView { // отображение ка�
     price: HTMLSpanElement; // элемент цены
     deleteButton: HTMLButtonElement; // кнопка удаления
 
-    setTitle(data: string): IViewBasketItem; // установить название товара
-    setPrice(data: string): IViewBasketItem; // установить цену товара
-    setRemoveHandler(data: string): IViewBasketItem; // установить событие на клик по кнопке deleteButton
+    setTitle(data: string): void; // установить название товара
+    setPrice(data: string): void; // установить цену товара
+    setRemoveHandler(data: string): void; // установить событие на клик по кнопке deleteButton
 }
 
 export interface IApiMarket {
@@ -169,7 +169,7 @@ export interface IForm extends IView {
 
     getData(): IContactsUserData | IOrderUserData; // абстрактный метод возвращающий данные из формы
     checkValid(): void; // абстрактный метод проверяющий валидацию
-    clearInputs(): void; // очищает все input в форме
+    resetForm(): void; // очищает все input в форме
 }
 
 export interface IOrderModal extends IForm { // 

@@ -4,6 +4,7 @@ import { View } from "../base/View";
 
 
 export class SuccessModal extends View implements ISuccessModal {
+    successButton: HTMLButtonElement;
 
     constructor (
         element: HTMLElement,
@@ -14,10 +15,11 @@ export class SuccessModal extends View implements ISuccessModal {
         (element.querySelector('.order-success__close') as HTMLButtonElement).onclick = () => {
             this.emitter.emit('modal:close');
         }
+        this.successButton = this.element.querySelector('.order-success__description') as HTMLButtonElement;
     }
 
     setFullPrice(data: string): void {
-        this.element.querySelector('.order-success__description').textContent = `Списано ${data} синапсов`;
+        this.successButton.textContent = `Списано ${data} синапсов`;
     }
 
     render(): HTMLElement {

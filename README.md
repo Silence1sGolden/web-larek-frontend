@@ -141,9 +141,9 @@ title: HTMLSpanElement; // элемент названия
 price: HTMLSpanElement; // элемент цены
 deleteButton: HTMLButtonElement; // кнопка удаления
 
-setTitle(data: string): IViewBasketItem; // установить название товара
-setPrice(data: string): IViewBasketItem; // установить цену товара
-setRemoveHandler(data: string): IViewBasketItem; // установить событие на клик по кнопке deleteButton
+setTitle(data: string): void; // установить название товара
+setPrice(data: string): void; // установить цену товара
+setRemoveHandler(data: string): void; // установить событие на клик по кнопке deleteButton
 
 ```
 
@@ -179,6 +179,8 @@ closeModal(): void; // закрывает модальное окно
 #### \- содержит в себе отображение оформленного заказа.
 
 ```ts
+
+successButton: HTMLButtonElement; // кнопка За новыми покупками
 
 setFullPrice(data: number): void; // устанавливает общую стоимость заказа
 
@@ -228,14 +230,14 @@ enableButton(): void; // включить кнопку Добавить
 **modal:close** - закрытие модального окна
 **modal:open** - открытие модального окна
 
-**card:open** - открытие модального окна карточки
+**card:open** - открывает карточку
 
-**basket:reload** - обновляет состояние корзины
+**basket:change** - обновляет состояние корзины
 **basket:open** - открывает корзину
-**basket:next** - событие при нажатие кнопки Оформить
+**basket:next** - событие при нажатии кнопки Оформить
 **basket:add** - добавить элемент в корзину
 **basket:remove** - удалить элемент из корзины
 
-**order:confirm** - событие при нажатие кнопки Далее
+**order:confirm** - событие при нажатии кнопки Далее
 
-**contacts:confirm** - событие при нажатие кнопки Оплатить
+**contacts:confirm** - событие при нажатии кнопки Оплатить

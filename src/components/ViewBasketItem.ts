@@ -19,21 +19,17 @@ export class ViewBasketItem extends View implements IViewBasketItem {
         this.deleteButton = element.querySelector('.basket__item-delete');
     }
 
-    setPrice(data: string): ViewBasketItem {
+    setPrice(data: string): void {
         this.price.textContent = data;
-        return this;
     }
 
-    setTitle(data: string): ViewBasketItem {
+    setTitle(data: string): void {
         this.title.textContent = data;
-        return this;
     }
 
-    setRemoveHandler(data: string): ViewBasketItem {
+    setRemoveHandler(data: string): void {
         this.deleteButton.onclick = () => {
-            this.element.remove();
             this.emitter.emit('basket:remove', { id: data });
         }
-        return this;
     }
 }

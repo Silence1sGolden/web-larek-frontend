@@ -23,7 +23,8 @@ export abstract class Form extends View implements IForm {
         this.error.textContent = data;
     }
 
-    clearInputs(): void {
-        this.inputs.forEach(elem => elem.value = '');
+    resetForm(): void {
+        this.element.reset();
+        this.nextButton.setAttribute('disabled', 'disabled');
     }
 }

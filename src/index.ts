@@ -45,6 +45,7 @@ emitter.on('modal:close', () => {
 
 emitter.on('modal:open', () => {
     page.setLocked(true);
+    modal.openModal();
 })
 
 emitter.on('card:open', (data: { data: IProduct }) => {
@@ -59,38 +60,36 @@ emitter.on('card:open', (data: { data: IProduct }) => {
         modals.card.enableButton();
     }
     emitter.emit('modal:open');
-    modal.openModal();
 })
 
-emitter.on('basket:reload', () => {
+emitter.on('basket:change', () => {
+    modals.basket.setBasketItems(
+        app.getBasketItems(true)?.map((elem) => {
+            const card = new ViewBasketItem(cardBasketTemplate.content.firstElementChild.cloneNode(true) as HTMLElement, emitter);
+            card.setPrice(elem.price ? String(elem.price) : 'Бесценно');
+            card.setTitle(elem.title);
+            card.setRemoveHandler(elem.id);
+            return card.render()
+        })
+    )
     modals.basket.setFullPrice(app.getTotalPrice());
     if (app.getBasketItems(false).length) {
         modals.basket.enableButton();
     } else {
         modals.basket.disableButton();
     }
-    emitter.emit('modal:open');
 })
 
 emitter.on('basket:open', () => {
-    modals.basket.setBasketItems(
-        app.getBasketItems(true)?.map((elem) => new ViewBasketItem(
-            cardBasketTemplate.content.firstElementChild.cloneNode(true) as HTMLElement, emitter)
-            .setPrice(elem.price ? String(elem.price) : 'Бесценно')
-            .setTitle(elem.title)
-            .setRemoveHandler(elem.id)
-            .render()
-        )
-    )
     modal.setData(modals.basket.render());
-    emitter.emit('basket:reload');
-    modal.openModal();
+    emitter.emit('basket:change');
+    emitter.emit('modal:open');
 })
 
 emitter.on('basket:remove', (data: { id: string }) => {
     app.removeFromBasket(data.id);
     page.setBasketCounter(app.getBasketItems(true) ? app.getBasketItems(true).length.toString() : '0');
-    emitter.emit('basket:reload');
+    emitter.emit('basket:change')
 })
 
 emitter.on('basket:next', () => {
@@ -115,24 +114,24 @@ emitter.on('contacts:confirm', () => {
     app.setEmail(email);
     app.setPhone(phone);
     appApi.order(app.getOrderData())
-    .then(() => {
-        modals.success.setFullPrice(app.getOrderData().total.toString());
-        app.getBasketItems(true).forEach(elem => app.removeFromBasket(elem.id));
-        app.clearUserData();
-        modals.order.clearButtons();
-        modals.contacts.clearInputs();
-        modals.order.clearInputs();
-        page.setBasketCounter(app.getBasketItems(true) ? app.getBasketItems(true).length.toString() : '0');
-        modal.setData(modals.success.render());
-    })
-    .catch(err => console.log(err));
+        .then(() => {
+            modals.success.setFullPrice(app.getOrderData().total.toString());
+            app.getBasketItems(true).forEach(elem => app.removeFromBasket(elem.id));
+            app.clearUserData();
+            modals.order.clearButtons();
+            modals.contacts.resetForm();
+            modals.order.resetForm();
+            page.setBasketCounter(app.getBasketItems(true) ? app.getBasketItems(true).length.toString() : '0');
+            modal.setData(modals.success.render());
+        })
+        .catch(err => console.log(err));
 })
 
 appApi.loadProducts()
-.then((res) => {
-    app.setProducts(res.items);
-    page.replaceGallery(app.getProducts().map((elem) => {
-        return new ViewCard(cardCatalogTemplate.content.firstElementChild.cloneNode(true) as HTMLElement, emitter, elem).render();
-    }));
-})
-.catch(err => console.log(err));
+    .then((res) => {
+        app.setProducts(res.items);
+        page.replaceGallery(app.getProducts().map((elem) => {
+            return new ViewCard(cardCatalogTemplate.content.firstElementChild.cloneNode(true) as HTMLElement, emitter, elem).render();
+        }));
+    })
+    .catch(err => console.log(err));
