@@ -82,7 +82,6 @@ emitter.on('basket:change', () => {
 
 emitter.on('basket:open', () => {
     modal.setData(modals.basket.render());
-    emitter.emit('basket:change');
     emitter.emit('modal:open');
 })
 
@@ -100,6 +99,7 @@ emitter.on('basket:add', (data: { id: string }) => {
     app.addToBasket(data.id);
     modals.card.disableButton();
     page.setBasketCounter(app.getBasketItems(true) ? app.getBasketItems(true).length.toString() : '0');
+    emitter.emit('basket:change');
 })
 
 emitter.on('order:confirm', () => {
@@ -121,7 +121,8 @@ emitter.on('contacts:confirm', () => {
             modals.order.clearButtons();
             modals.contacts.resetForm();
             modals.order.resetForm();
-            page.setBasketCounter(app.getBasketItems(true) ? app.getBasketItems(true).length.toString() : '0');
+            page.setBasketCounter('0');
+            emitter.emit('basket:change');
             modal.setData(modals.success.render());
         })
         .catch(err => console.log(err));

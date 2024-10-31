@@ -1,4 +1,4 @@
-import { IProduct, IViewBasketItem } from "../types";
+import { IViewBasketItem } from "../types";
 import { EventEmitter } from "./base/events";
 import { View } from "./base/View";
 

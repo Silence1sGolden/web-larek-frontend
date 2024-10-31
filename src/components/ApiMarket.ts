@@ -1,5 +1,4 @@
 import { IApiMarket, IApiProducts, IOrderCorrectResponse, IOrderData } from "../types";
-import { API_URL } from "../utils/constants";
 import { Api } from "./base/api";
 
 export class ApiMarket implements IApiMarket {
