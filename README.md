@@ -143,7 +143,7 @@ deleteButton: HTMLButtonElement; // кнопка удаления
 
 setTitle(data: string): void; // установить название товара
 setPrice(data: string): void; // установить цену товара
-setRemoveHandler(data: string): void; // установить событие на клик по кнопке deleteButton
+setRemoveHandler(id: string): void; // установить событие на клик по кнопке deleteButton
 
 ```
 

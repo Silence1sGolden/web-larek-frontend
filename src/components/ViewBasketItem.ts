@@ -27,9 +27,9 @@ export class ViewBasketItem extends View implements IViewBasketItem {
         this.title.textContent = data;
     }
 
-    setRemoveHandler(data: string): void {
+    setRemoveHandler(id: string): void {
         this.deleteButton.onclick = () => {
-            this.emitter.emit('basket:remove', { id: data });
+            this.emitter.emit('basket:remove', { id });
         }
     }
 }
