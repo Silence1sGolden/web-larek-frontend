@@ -1,12 +1,9 @@
-import { IModalPayment } from "../../types";
+import { IOrderModal, IOrderUserData } from "../../types";
 import { EventEmitter } from "../base/events";
-import { View } from "../base/View";
+import { Form } from "../base/Form";
 
-export class OrderModal extends View implements IModalPayment {
-    element: HTMLFormElement;
-    public buttons: HTMLButtonElement[];
-    inputs: HTMLInputElement[];
-    nextButton: HTMLButtonElement;
+export class OrderModal extends Form implements IOrderModal {
+    buttons: HTMLButtonElement[];
 
     constructor(
         element: HTMLFormElement,
@@ -16,40 +13,44 @@ export class OrderModal extends View implements IModalPayment {
 
         this.buttons = Array.from(this.element.querySelectorAll('.button_alt'));
         this.buttons.forEach(elem => elem.onclick = () => { this.setButtonActive(elem); this.checkValid() });
-        this.nextButton = element.querySelector('.order__button') as HTMLButtonElement;
         this.nextButton.onclick = (evt) => {
             evt.preventDefault();
             this.emitter.emit('order:confirm');
         }
-        this.inputs = Array.from(element.querySelectorAll('input'));
         this.inputs.forEach(elem => elem.oninput = () => this.checkValid());
     }
 
     checkValid(): void {
-        if (this.inputs.every(elem => elem.validity.valid) && this.buttons.find(elem => elem.classList.contains('button_alt-active'))) {
-            this.nextButton.removeAttribute('disabled');
+        if (this.inputs.every(elem => elem.value !== '')) {
+            if (this.buttons.find(elem => elem.classList.contains('button_alt-active'))) {
+                this.nextButton.removeAttribute('disabled');
+                this.setErrorText('');
+            } else {
+                this.nextButton.setAttribute('disabled', 'disabled');
+                this.setErrorText('Выберите способ оплаты');
+            }
         } else {
             this.nextButton.setAttribute('disabled', 'disabled');
+            this.setErrorText(`Заполните поле ${this.inputs.find(elem => elem.value === '').previousElementSibling.textContent}`);
         }
     }
 
-    getData(): { payment: string, address: string} {
+    getData(): IOrderUserData {
         return {
-            payment: this.element.querySelector('.button_alt-active').textContent,
+            payment: this.element.querySelector('.button_alt-active').textContent == 'Онлайн' ? 'online' : 'offline',
             address: (this.element.elements.namedItem('address') as HTMLInputElement).value
         }
     }
 
-    private setButtonActive(data: HTMLButtonElement): void {
+    setButtonActive(data: HTMLButtonElement): void {
         data.classList.replace('button_alt', 'button_alt-active');
         this.buttons.filter(elem => elem !== data).forEach(elem => {
             elem.classList.replace('button_alt-active', 'button_alt');
         });
     }
 
-    clearInputs(): void {
+    clearButtons(): void {
         this.element.querySelector('.button_alt-active').classList.replace('button_alt-active', 'button_alt');
-        this.inputs.forEach(elem => elem.value = '');
     }
 
     render(): HTMLFormElement {

@@ -1,15 +1,15 @@
-import { IProduct } from "../../types";
+import { ICardPreviewModal, IProduct } from "../../types";
 import { CDN_URL } from "../../utils/constants";
 import { EventEmitter } from "../base/events";
 import { View } from "../base/View";
 
-export class CardModal extends View {
-    public img: HTMLImageElement;
-    public category: HTMLSpanElement;
-    public title: HTMLHeadingElement;
-    public price: HTMLSpanElement;
-    public description: HTMLParagraphElement;
-    public button: HTMLButtonElement;
+export class CardPreviewModal extends View implements ICardPreviewModal {
+    img: HTMLImageElement;
+    category: HTMLSpanElement;
+    title: HTMLHeadingElement;
+    price: HTMLSpanElement;
+    description: HTMLParagraphElement;
+    button: HTMLButtonElement;
 
     constructor(
         element: HTMLElement,

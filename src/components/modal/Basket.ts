@@ -1,24 +1,29 @@
+import { IBasketModal } from "../../types";
 import { EventEmitter } from "../base/events";
 import { View } from "../base/View";
 
-export class BasketModal extends View {
-    public nextButton: HTMLButtonElement;
+export class BasketModal extends View implements IBasketModal {
+    nextButton: HTMLButtonElement;
+    basketList: HTMLElement;
+    basketPrice: HTMLElement;
 
     constructor(
         element: HTMLElement,
         public emitter: EventEmitter
     ) {
         super(element);
-        this.nextButton = element.querySelector('.basket__button') as HTMLButtonElement;
+        this.nextButton = element.querySelector('.basket__button');
         this.nextButton.onclick = () => emitter.emit('basket:next');
+        this.basketList = this.element.querySelector('.basket__list');
+        this.basketPrice = this.element.querySelector('.basket__price');
     }
 
-    setData(data: HTMLElement[]): void {
-        this.element.querySelector('.basket__list').replaceChildren(...data);
+    setBasketItems(data: HTMLElement[]): void {
+        this.basketList.replaceChildren(...data);
     }
 
     setFullPrice(data: number): void {
-        this.element.querySelector('.basket__price').textContent = data + ' синапсов';
+        this.basketPrice.textContent = data + ' синапсов';
     }
 
     disableButton(): void {

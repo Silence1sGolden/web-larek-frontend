@@ -1,14 +1,16 @@
-import { IViewBasketItem } from "../types";
+import { IProduct, IViewBasketItem } from "../types";
+import { EventEmitter } from "./base/events";
 import { View } from "./base/View";
 
 
 export class ViewBasketItem extends View implements IViewBasketItem {
     title: HTMLSpanElement;
     price: HTMLSpanElement;
-    deleteButton: HTMLElement;
+    deleteButton: HTMLButtonElement;
 
     constructor(
         element: HTMLElement,
+        public emitter: EventEmitter
     ) {
         super(element);
 
@@ -27,8 +29,11 @@ export class ViewBasketItem extends View implements IViewBasketItem {
         return this;
     }
 
-    setRemoveHandler(data: Function): ViewBasketItem {
-        this.deleteButton.onclick = () => data();
+    setRemoveHandler(data: string): ViewBasketItem {
+        this.deleteButton.onclick = () => {
+            this.element.remove();
+            this.emitter.emit('basket:remove', { id: data });
+        }
         return this;
     }
 }

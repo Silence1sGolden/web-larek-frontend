@@ -1,20 +1,22 @@
+import { ISuccessModal } from "../../types";
 import { EventEmitter } from "../base/events";
 import { View } from "../base/View";
 
 
-export class SuccessModal extends View {
-    button: HTMLButtonElement;
+export class SuccessModal extends View implements ISuccessModal {
 
-    constructor (element: HTMLElement, public emitter: EventEmitter) {
+    constructor (
+        element: HTMLElement,
+        public emitter: EventEmitter
+    ) {
         super(element);
 
-        this.button = element.querySelector('.order-success__close');
-        this.button.onclick = () => {
-            this.emitter.emit('success:close');
+        (element.querySelector('.order-success__close') as HTMLButtonElement).onclick = () => {
+            this.emitter.emit('modal:close');
         }
     }
 
-    setTotalPrice(data: string): void {
+    setFullPrice(data: string): void {
         this.element.querySelector('.order-success__description').textContent = `Списано ${data} синапсов`;
     }
 

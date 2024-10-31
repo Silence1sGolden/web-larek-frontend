@@ -1,10 +1,10 @@
-import { IMarket, IOrderData, IOrderUserData, IProduct, PaymentMethod } from "../types";
+import { IContactsUserData, IMarket, IOrderData, IOrderUserData, IProduct, PaymentMethod } from "../types";
 
 export class Market implements IMarket {
 
     constructor (
         public products: IProduct[] = [],
-        public userData: IOrderUserData = {
+        public userData: IOrderUserData & IContactsUserData = {
             address: '',
             phone: '',
             email: '',
@@ -52,10 +52,6 @@ export class Market implements IMarket {
             return this.products.filter(item => item.inBasket);
         }
         return this.products.filter(item => item.inBasket && item.price);
-    }
-
-    getProduct(id: string): IProduct | undefined {
-        return this.products.find((item) => item.id === id);
     }
 
     getProducts(): IProduct[] {

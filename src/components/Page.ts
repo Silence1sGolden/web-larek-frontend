@@ -14,6 +14,7 @@ export class Page extends View implements IPage {
 
         this.cardContainer = document.querySelector('.gallery');
         this.basketCounter = document.querySelector('.header__basket-counter');
+        (this.element.querySelector('.header__basket') as HTMLElement).onclick = () => emitter.emit('basket:open');
     }
 
     replaceGallery(data: HTMLElement[]): void {
